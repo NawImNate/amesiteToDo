@@ -1,15 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
+import Form from "/form.js";
 
 function App() {
   return (
     <div className="App">
       <header>
         <h1>Test</h1>
-        <input className="input-todo" type="text" onChange="{}" />
-        <button className="submit-todo" type="submit" onClick="{}">
-          +
-        </button>
+        <Form />
       </header>
     </div>
   );
