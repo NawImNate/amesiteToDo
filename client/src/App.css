@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.todo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.todo-container-card {
+  margin-right: 5px;
+}
+
+.todoList-container .todo-list {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+}
