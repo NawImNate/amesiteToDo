@@ -1,5 +1,6 @@
 const { Pool } = require("pg");
 
+//Instance pool, specify credentials
 const pool = new Pool({
   user: "postgres",
   password: "Database0894",
