@@ -14,9 +14,10 @@ const Form = ({}) => {
         "http://localhost:5000/todos",
         requestOptions
       );
+
       const data = await response.json();
 
-      console.log(response);
+      console.log(data);
     } catch (err) {
       console.log(err.message);
     }
