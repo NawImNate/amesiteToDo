@@ -55,28 +55,39 @@ app.get("/todos/:id", async (req, res) => {
 // crypt($1, gen_salt('bf'))
 app.post("/users", async (req, res) => {
   //create a function that retrieves if there is an email.
-  const getCryptoPw = await pool.query(
+  const checkUser = await pool.query(
     `select password from users where email = $1`,
     [req.body.login.email]
   );
-  //CL if there is a result
-  console.log(getCryptoPw.rows);
-  // const existingUser = await pool.query(
-  //   // edit this select statement after using state for overall login, email and password input boxes.
-  //   `select id from users where password = crypt($1, gen_salt('bf'))`,
-  //   [req.body.login]
-  // );
-  // get hashed pw from the db table
 
   //if email is not found in users table then I need to create a new user.
-  if (getCryptoPw.rows == 0) {
+  if (checkUser.rows == 0) {
     const newUser = await pool.query(
       `INSERT INTO "users" ("password", "email") VALUES ((crypt($1, gen_salt('bf'))), $2)
         RETURNING id`,
       [req.body.login.password, req.body.login.email]
     );
-    console.log(newUser.rows);
+    console.log("*******New User Created!");
+    res.json({ authenticated: true, userID: newUser.rows[0].id });
   } else {
+    const authenticate = await pool.query(
+      `SELECT id from users where email = $1 and password = crypt ($2, password)`,
+      [req.body.login.email, req.body.login.password]
+    );
+    console.log(authenticate.rowCount > 0);
+
+    //if authenticated then select list
+    if (authenticate.rowCount > 0) {
+      // query to access the compatible list of todos
+      // const todoList = await pool.query(
+      //   `SELECT todo_id, title, description, due_date, user_id FROM todo_item WHERE user_id = $1`,
+      //   [authenticate.rows[0].id]
+      // );
+      console.log(authenticate.rows[0]);
+      res.json({ authenticated: true, userID: authenticate.rows[0].id });
+    } else {
+      res.json({ authenticated: false });
+    }
   }
 
   // const result = await pool.query(

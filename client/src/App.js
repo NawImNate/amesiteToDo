@@ -22,6 +22,7 @@ function App() {
       );
 
       const data = await response.json();
+      setAuthenticated(data.authenticated);
 
       console.log(data);
     } catch (err) {
