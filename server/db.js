@@ -1,4 +1,4 @@
-const { Pool } = require("pg");
+const Pool = require("pg").Pool;
 
 //Instance pool, specify credentials
 const pool = new Pool({
