@@ -36,13 +36,59 @@ app.post("/todos", async (req, res) => {
 
 //get all todos
 
-app.get("/todos", async (req,res) => {
+app.get("/todos/:id", async (req, res) => {
   try {
-    const 
-  } catch (error) {
-    
+    const { id } = req.params;
+    console.log("test");
+    const result = await pool.query(
+      `SELECT * FROM todo_item WHERE todo_id = $1`,
+      [id]
+    );
+    console.log(result.rows);
+    res.json(result.rows);
+  } catch (err) {
+    console.log(err.message);
   }
-})
+});
+
+//Creating/Logging in a user
+// crypt($1, gen_salt('bf'))
+app.post("/users", async (req, res) => {
+  //create a function that retrieves if there is an email.
+  const getCryptoPw = await pool.query(
+    `select password from users where email = $1`,
+    [req.body.login.email]
+  );
+  //CL if there is a result
+  console.log(getCryptoPw.rows);
+  // const existingUser = await pool.query(
+  //   // edit this select statement after using state for overall login, email and password input boxes.
+  //   `select id from users where password = crypt($1, gen_salt('bf'))`,
+  //   [req.body.login]
+  // );
+  // get hashed pw from the db table
+
+  //if email is not found in users table then I need to create a new user.
+  if (getCryptoPw.rows == 0) {
+    const newUser = await pool.query(
+      `INSERT INTO "users" ("password", "email") VALUES ((crypt($1, gen_salt('bf'))), $2)
+        RETURNING id`,
+      [req.body.login.password, req.body.login.email]
+    );
+    console.log(newUser.rows);
+  } else {
+  }
+
+  // const result = await pool.query(
+  //   `INSERT INTO "users" ("password") VALUES (crypt($1, gen_salt('bf')))
+  //    RETURNING id`,
+  //   [req.body.Password]
+  // );
+  // console.log(result);
+  // console.log(req.body.Password);
+  // console.log(result.rows[0].todo_id);
+  // res.json(result.rows[0].id);
+});
 
 //get a todo
 
