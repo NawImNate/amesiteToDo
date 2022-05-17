@@ -1,4 +1,4 @@
-CREATE DATABASE amesiteToDo 
+CREATE DATABASE amesiteToDo;
 
 CREATE TABLE todo_item (
     todo_id SERIAL NOT NULL PRIMARY KEY,
@@ -8,3 +8,12 @@ CREATE TABLE todo_item (
     tag_id INT NOT NULL,
     list_id INT NOT NULL 
 );
+
+CREATE EXTENSION pgcrypto;
+
+CREATE TABLE users (
+    id serial PRIMARY KEY, 
+    password TEXT NOT NULL
+    );
+
+ALTER TABLE users (ADD COLUMN email TEXT); 
