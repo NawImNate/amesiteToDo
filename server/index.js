@@ -37,12 +37,11 @@ app.post("/todos", async (req, res) => {
 
 app.get("/todos/:id", async (req, res) => {
   try {
-    const { id } = req.params;
+    const userID = req.params["id"];
     const result = await pool.query(
-      `SELECT * FROM todo_item WHERE todo_id = $1`,
-      [id]
+      `SELECT * FROM todo_item WHERE user_id = $1`,
+      [userID]
     );
-    console.log(result.rows);
     res.json(result.rows);
   } catch (err) {
     console.log(err.message);
