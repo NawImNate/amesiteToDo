@@ -1,9 +1,22 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 
-const TodoList = () => {
+const TodoList = ({ ToDoList }) => {
+  // async function deleteTodo(postID){}
+
   return (
     <div className="todoList-container">
-      <ul className="todo-list">Todo List</ul>
+      <ul className="todo-list">
+        {ToDoList.length > 0 && (
+          <div>
+            {ToDoList.map((post) => (
+              <div>
+                <li key={post.id}>{post.description}</li>
+                <span>{post.title}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </ul>
     </div>
   );
 };
