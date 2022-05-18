@@ -25,10 +25,9 @@ const pool = new Pool(credentials);
 //Create a todo
 app.post("/todos", async (req, res) => {
   // const { TodoItem } = req.body;
-
   const result = await pool.query(
-    `INSERT INTO "todo_item" ("title", "description", "due_date", "tag_id", "list_id") VALUES ($1, $2, $3, $4, $5) RETURNING todo_id`,
-    [req.body.title, req.body.description, req.body.dueDate, 1, 1]
+    `INSERT INTO "todo_item" ("title", "description", "due_date", "tag_id", "user_id") VALUES ($1, $2, $3, $4, $5) RETURNING todo_id`,
+    [req.body.title, req.body.description, req.body.dueDate, 1, req.body.userID]
   );
   console.log(result.rows[0].todo_id);
   res.json(result.rows[0].todo_id);
@@ -39,7 +38,6 @@ app.post("/todos", async (req, res) => {
 app.get("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("test");
     const result = await pool.query(
       `SELECT * FROM todo_item WHERE todo_id = $1`,
       [id]
@@ -59,7 +57,6 @@ app.post("/users", async (req, res) => {
     `select password from users where email = $1`,
     [req.body.login.email]
   );
-
   //if email is not found in users table then I need to create a new user.
   if (checkUser.rows == 0) {
     const newUser = await pool.query(
