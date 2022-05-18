@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 
-const Form = ({ userID }) => {
+const Form = ({ userID, triggerReload }) => {
   const [TodoItem, setTodoItem] = useState(null);
 
   const submitTodo = async () => {
-    setTodoItem({ ...TodoItem, userID: userID });
-    console.log(userID);
     try {
+      setTodoItem({ ...TodoItem, userID: userID });
+      console.log(TodoItem);
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(TodoItem),
       };
       const response = await fetch(
-        "http://localhost:5000/todos",
+        `http://localhost:5000/todos/`,
         requestOptions
       );
 
       const data = await response.json();
-
-      console.log(data);
+      if (data != null) {
+        triggerReload();
+      }
     } catch (err) {
       console.log(err.message);
     }
