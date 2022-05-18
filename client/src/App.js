@@ -8,6 +8,7 @@ function App() {
   const [Authenticated, setAuthenticated] = useState(false);
   const [login, setLogin] = useState(null);
   const [userID, setuserID] = useState(null);
+  const [todoList, setTodoList] = useState([]);
 
   // check if user exists, create if user doesn't exist
   const checkUser = async () => {
@@ -28,20 +29,36 @@ function App() {
         setuserID(data.userID);
       }
       setAuthenticated(data.authenticated);
-
-      console.log(data);
     } catch (err) {
       console.log(err.message);
     }
   };
+
+  async function triggerReload(testVariable) {
+    console.log("CLICKED MAH BOy RELOAD THEM TODOS");
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(
+      `http://localhost:5000/todos/${userID}`,
+      requestOptions
+    );
+    const data = await response.json();
+    console.log(data);
+    if (data != null) {
+      setTodoList(data);
+    }
+  }
+
   console.log(login);
   return (
     <div className="App">
       {Authenticated ? (
         <div>
           <h1>Todo List</h1>
-          <Form userID={userID} />
-          <TodoList userID={userID} />
+          <Form userID={userID} triggerReload={triggerReload} />
+          <TodoList ToDoList={todoList} />
         </div>
       ) : (
         <div>
