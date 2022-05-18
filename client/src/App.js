@@ -7,6 +7,7 @@ import TodoList from "./TodoList";
 function App() {
   const [Authenticated, setAuthenticated] = useState(false);
   const [login, setLogin] = useState(null);
+  const [userID, setuserID] = useState(null);
 
   // check if user exists, create if user doesn't exist
   const checkUser = async () => {
@@ -22,6 +23,10 @@ function App() {
       );
 
       const data = await response.json();
+
+      if (data.userID !== null) {
+        setuserID(data.userID);
+      }
       setAuthenticated(data.authenticated);
 
       console.log(data);
@@ -35,8 +40,8 @@ function App() {
       {Authenticated ? (
         <div>
           <h1>Todo List</h1>
-          <Form />
-          <TodoList />
+          <Form userID={userID} />
+          <TodoList userID={userID} />
         </div>
       ) : (
         <div>
