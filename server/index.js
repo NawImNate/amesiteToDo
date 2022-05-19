@@ -97,11 +97,25 @@ app.post("/users", async (req, res) => {
   // res.json(result.rows[0].id);
 });
 
-//get a todo
-
 //update a todo
+// app.put('/todos/:id', async (req,res) => {
+//   const result = await pool.query (
+//     `INSERT INTO "todo_item" ("title", "description", "due_date",  "tag_id", "user_id") VALUES ($1, $2, $3, $4, $5) RETURNING todo_id`,
+// [req.body.title, req.body.description, req.body.dueDate, 1, req.body.userID]
+//   );
+// })
 
-//delete a todo
+// delete a todo
+app.delete("/status/:id", async (req, res) => {
+  console.log("test:" + "test");
+  const todo_id = req.params["id"];
+  const result = await pool.query(`DELETE FROM todo_item WHERE todo_id = $1`, [
+    todo_id,
+  ]);
+
+  console.log(result);
+  res.json(result.rowCount);
+});
 
 app.listen(5000, () => {
   console.log("working, on 5000.");
