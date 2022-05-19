@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
-const Form = ({ userID, triggerReload }) => {
+const Form = ({ userID, triggerReload, editTodo }) => {
   const [TodoItem, setTodoItem] = useState(null);
+
+  console.log(editTodo);
 
   const submitTodo = async () => {
     try {
