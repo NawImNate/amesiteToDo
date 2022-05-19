@@ -9,6 +9,7 @@ function App() {
   const [login, setLogin] = useState(null);
   const [userID, setuserID] = useState(null);
   const [todoList, setTodoList] = useState([]);
+  const [editTodo, setEditTodo] = useState(null);
 
   // check if user exists, create if user doesn't exist
   const checkUser = async () => {
@@ -51,14 +52,26 @@ function App() {
     }
   }
 
-  console.log(login);
+  async function passPropsForEdit(todo_item) {
+    console.log(todo_item);
+    setEditTodo(todo_item);
+  }
+
   return (
     <div className="App">
       {Authenticated ? (
         <div>
           <h1>Todo List</h1>
-          <Form userID={userID} triggerReload={triggerReload} />
-          <TodoList ToDoList={todoList} />
+          <Form
+            userID={userID}
+            triggerReload={triggerReload}
+            editTodo={editTodo}
+          />
+          <TodoList
+            ToDoList={todoList}
+            triggerReload={triggerReload}
+            passPropsForEdit={passPropsForEdit}
+          />
         </div>
       ) : (
         <div>
